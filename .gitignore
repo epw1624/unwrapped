@@ -1,0 +1,10 @@
+*.pyc
+
+env/
+venv/
+
+.idea
+.env
+
+credentials.sh
+.cache-*
