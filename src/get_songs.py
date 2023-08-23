@@ -2,38 +2,14 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from decouple import config
 
-def get_user_top_songs(spotify):
-    #get the time frame and number of songs from the user
-    timeframe_chosen = False
-    while (not timeframe_chosen):
-        print("""Enter the time frame that you wish to analyze: 
-        1) Short term
-        2) Medium term
-        3) Long term""")
-        timeframe_int = input("Enter 1, 2 or 3 to make your selection: ")
-        if int(timeframe_int) == 1:
-            timeframe = 'short_term'
-            timeframe_chosen = True
-        elif int(timeframe_int) == 2:
-            timeframe = 'medium_term'
-            timeframe_chosen = True
-        elif int(timeframe_int) == 3:
-            timeframe = 'long_term'
-            timeframe_chosen = True
-        else:
-            print("Invalid input! Please enter 1, 2 or 3 to make your selection: ")
-    #number of songs should be between 1 and 1000 and must be an integer
-    number_chosen = False
-    while (not number_chosen):
-        input_number = input("Enter the number of songs you wish to analyze: ")
-        if (input_number.isdigit()):
-            num_songs = int(input_number)
-            if (num_songs >= 1 and num_songs <= 1000):
-                number_chosen = True
-        else:
-            input_number = input("Invalid input! Please enter an integer between 1 and 1000, inclusive: ")
-    #fetch the songs from spotify
-    songs = spotify.current_user_top_tracks(time_range = timeframe, limit = num_songs)
+def get_user_top_songs(spotify, timeframe, num_songs):
+    """
+    Fetches a dict of the users <num_songs> top songs over short, medium or long term
+    timeframe: string, must be 'short_term', 'medium_term' or 'long_term'
+    num_songs: the number of songs to analyze, must be between 1 and 1000, inclusive
+    """
+    songs = spotify.current_user_top_tracks(time_range=timeframe, limit=num_songs)
+    print(songs)
     return songs
 
 def get_user_playlist_songs(spotify, username):
@@ -74,10 +50,12 @@ def get_user_playlist_songs(spotify, username):
 
 #if the user has more than 2000 saved tracks, this function will only take the first 2000
 def get_user_saved_songs(spotify, username):
+    #any number under 2000
     songs = spotify.current_user_saved_tracks(limit=2000)
     return songs
 
 def get_artist_top_songs(spotify):
+    #this will take 10 songs no matter what
     #let the user pick the artist
     name = input("Enter the name of the artist: ")
     search_results = spotify.search(q=name, type='artist')
@@ -90,5 +68,18 @@ def get_artist_top_songs(spotify):
     #now return this artist's top songs
     songs = spotify.artist_top_tracks(chosen_artist.get['uri'])
     return songs
+
+def get_songs_from_genre(spotify):
+    #let the user select from a list of genres and return 100 songs from that genre
+    #uses the recommendations function
+    genre_options = spotify.recommendation_genre_seeds()
+    print("Available genres:")
+    for i, genre in enumerate(genre_options):
+        print(str(i+1) + ")" + genre)
+    selection = input("Enter 1-" + len(genre_options)+" to make your selection")
+    genre_list = [genre]
+    songs = spotify.recommendations(seed_genres=genre_list, limit=100)
+    return songs
+
 
 
