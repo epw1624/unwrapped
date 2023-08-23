@@ -6,6 +6,9 @@ from decouple import config
 import json
 import matplotlib.pyplot as plot
 import sys
+import math
+
+VERY_LARGE_INT = 2**63 - 1
 
 # API_ID = config('SPOTIPY_CLIENT_ID')
 # API_SECRET = config('SPOTIPY_CLIENT_SECRET')
@@ -44,7 +47,7 @@ def get_danceability(songs, spotify):
     #0.2-0.3
     #etc
     danceabilities = []
-    for track in songs['items']:
+    for track in songs:
         features = spotify.audio_features(track['uri'])
         danceability = features[0]['danceability']
         danceabilities.append(danceability)
@@ -55,7 +58,7 @@ def get_danceability(songs, spotify):
 
 def get_energy(songs, spotify):
     energies = []
-    for track in songs['items']:
+    for track in songs:
         features = spotify.audio_features(track['uri'])
         energy = features[0]['energy']
         energies.append(energy)
@@ -67,7 +70,7 @@ def get_energy(songs, spotify):
 def get_key(songs, spotify):
     #pie chart
     keys = [0] * 12
-    for track in songs['items']:
+    for track in songs:
         features = spotify.audio_features(track['uri'])
         key = features[0]['key']
         if (key != -1):
@@ -80,21 +83,21 @@ def get_key(songs, spotify):
 
 def get_loudness(songs, spotify):
     loudnesses = []
-    for track in songs['items']:
+    for track in songs:
         features = spotify.audio_features(track['uri'])
         loudness = features[0]['loudness']
         loudnesses.append(loudness)
 
     plot.hist(loudnesses, bins=10)
-    plot.title("Energy")
+    plot.title("Loudness")
     plot.show()
 
 def get_tempo(songs, spotify):
     tempos = []
     #also keep track of max and min tempo
-    max = sys.maxsize()
-    min = -sys.maxsize()
-    for track in songs['items']:
+    max = -VERY_LARGE_INT
+    min = VERY_LARGE_INT
+    for track in songs:
         features = spotify.audio_features(track['uri'])
         tempo = features[0]['tempo']
         if (tempo > max):
@@ -103,7 +106,7 @@ def get_tempo(songs, spotify):
             min = tempo
         tempos.append(tempo)
 
-    num_bins = (max - min) // 5
+    num_bins = math.floor((max - min) / 5)
     plot.hist(tempos, bins=num_bins)
     plot.title("Tempo")
     plot.show()
@@ -111,18 +114,18 @@ def get_tempo(songs, spotify):
 
 def get_duration(songs, spotify):
     durations = []
-    max = sys.maxsize()
-    min = -sys.maxsize()
-    for track in songs['items']:
+    max = -VERY_LARGE_INT
+    min = VERY_LARGE_INT
+    for track in songs:
         features = spotify.audio_features(track['uri'])
-        duration = features[0]['duration']
+        duration = features[0]['duration_ms'] / 1000 #puts it from ms into s
         if (duration > max):
             max = duration
         elif (duration < min):
             min = duration
         durations.append(duration)
 
-    num_bins = (max - min) // 10
+    num_bins = math.floor((max - min) / 10)
     plot.hist(durations, bins=num_bins)
     plot.title("Duration")
     plot.show()
@@ -130,7 +133,7 @@ def get_duration(songs, spotify):
 def get_mode(songs, spotify):
     major = 0
     minor = 0
-    for track in songs['items']:
+    for track in songs:
         features = spotify.audio_features(track['uri'])
         mode = features[0]['mode']
         if (int(mode) == '1'):
@@ -145,8 +148,8 @@ def get_mode(songs, spotify):
 
 def get_time_sig(songs, spotify):
     #time sig is between 3 and 7 inclusive
-    meters = []
-    for track in songs['items']:
+    meters = [0] * 5
+    for track in songs:
         features = spotify.audio_features(track['uri'])
         meter = features[0]['time_signature']
         meters[meter - 3] += 1
@@ -157,7 +160,7 @@ def get_time_sig(songs, spotify):
 
 def get_speechiness(songs, spotify):
     speechinesses = []
-    for track in songs['items']:
+    for track in songs:
         features = spotify.audio_features(track['uri'])
         speechiness = features[0]['speechiness']
         speechinesses.append(speechiness)
