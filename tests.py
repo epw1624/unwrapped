@@ -56,30 +56,39 @@ for song in songs['items']:
     song_uris.append(song['uri'])
 
 def test_get_danceability():
-    data.get_danceability(sp, song_uris)
+    ax = data.get_danceability(sp, song_uris)[1]
+    assert ax.get_title() == "Danceability"
 
 def test_get_energy():
-    pass
+    ax = data.get_energy(sp, song_uris)[1]
+    assert ax.get_title() == "Energy"
 
 def test_get_key():
-    pass
+    ax = data.get_key(sp, song_uris)[1]
+    assert ax.get_title() == "Key"
 
 def test_get_loudness():
-    pass
+    ax = data.get_loudness(sp, song_uris)[1]
+    assert ax.get_title() == "Loudness"
 
 def test_get_tempo():
-    pass
+    ax = data.get_tempo(sp, song_uris)[1]
+    assert ax.get_title() == "Tempo"
 
 def test_get_duration():
-    pass
+    ax = data.get_duration(sp, song_uris)[1]
+    assert ax.get_title() == "Duration"
 
 def test_get_mode():
-    pass
+    ax = data.get_mode(sp, song_uris)[1]
+    assert ax.get_title() == "Mode"
 
 def test_get_time_sig():
-    pass
+    ax = data.get_time_sig(sp, song_uris)[1]
+    assert ax.get_title() == "Time Signature"
 
 def test_get_speechiness():
-    pass
+    ax = data.get_speechiness(sp, song_uris)[1]
+    assert ax.get_title() == "Speechiness"
 
 
