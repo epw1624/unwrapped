@@ -51,10 +51,12 @@ def get_danceability(spotify, songs):
         features = spotify.audio_features(track)
         danceability = features[0]['danceability']
         danceabilities.append(danceability)
-    #now plot this data in a histogram
-    plot.hist(danceabilities, bins=10)
-    plot.title("Danceability")
-    plot.show()
+    
+    fig, ax = plot.subplots()
+    ax.hist(danceabilities, bins=10)
+    ax.set_title("Danceability")
+
+    return fig, ax
 
 def get_energy(spotify, songs):
     energies = []
@@ -63,9 +65,11 @@ def get_energy(spotify, songs):
         energy = features[0]['energy']
         energies.append(energy)
 
-    plot.hist(energies, bins=10)
-    plot.title("Energy")
-    plot.show()
+    fig, ax = plot.subplots()
+    ax.hist(energies, bins=10)
+    ax.set_title("Energy")
+
+    return fig, ax
 
 def get_key(spotify, songs):
     #pie chart
@@ -77,9 +81,12 @@ def get_key(spotify, songs):
             keys[key] += 1
 
     labels = 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'
-    plot.pie(keys, labels=labels)
-    plot.title("Key")
-    plot.show()
+    fig, ax = plot.subplots()
+    ax.pie(keys, labels=labels, autopct='%1.1f%%', startangle=90)
+    ax.axis("equal")
+    ax.set_title("Key")
+    
+    return fig, ax
 
 def get_loudness(spotify, songs):
     loudnesses = []
@@ -88,9 +95,11 @@ def get_loudness(spotify, songs):
         loudness = features[0]['loudness']
         loudnesses.append(loudness)
 
-    plot.hist(loudnesses, bins=10)
-    plot.title("Loudness")
-    plot.show()
+    fig, ax = plot.subplots()
+    ax.hist(loudnesses, bins=10)
+    ax.set_title("Loudness")
+
+    return fig, ax
 
 def get_tempo(spotify, songs):
     tempos = []
@@ -98,7 +107,7 @@ def get_tempo(spotify, songs):
     max = -VERY_LARGE_INT
     min = VERY_LARGE_INT
     for track in songs:
-        features = spotify.audio_features(track['uri'])
+        features = spotify.audio_features(track)
         tempo = features[0]['tempo']
         if (tempo > max):
             max = tempo
@@ -107,9 +116,12 @@ def get_tempo(spotify, songs):
         tempos.append(tempo)
 
     num_bins = math.floor((max - min) / 5)
-    plot.hist(tempos, bins=num_bins)
-    plot.title("Tempo")
-    plot.show()
+    
+    fig, ax = plot.subplots()
+    ax.hist(tempos, bins=num_bins)
+    ax.set_title("Tempo")
+
+    return fig, ax
 
 
 def get_duration(spotify, songs):
@@ -117,7 +129,7 @@ def get_duration(spotify, songs):
     max = -VERY_LARGE_INT
     min = VERY_LARGE_INT
     for track in songs:
-        features = spotify.audio_features(track['uri'])
+        features = spotify.audio_features(track)
         duration = features[0]['duration_ms'] / 1000 #puts it from ms into s
         if (duration > max):
             max = duration
@@ -126,15 +138,18 @@ def get_duration(spotify, songs):
         durations.append(duration)
 
     num_bins = math.floor((max - min) / 10)
-    plot.hist(durations, bins=num_bins)
-    plot.title("Duration")
-    plot.show()
+    
+    fig, ax = plot.subplots()
+    ax.hist(durations, bins=num_bins)
+    ax.set_title("Duration")
+
+    return fig, ax
 
 def get_mode(spotify, songs):
     major = 0
     minor = 0
     for track in songs:
-        features = spotify.audio_features(track['uri'])
+        features = spotify.audio_features(track)
         mode = features[0]['mode']
         if (int(mode) == '1'):
             major += 1
@@ -142,31 +157,41 @@ def get_mode(spotify, songs):
             minor += 1
     data = [major, minor]
     labels = ["Major", "Minor"]
-    plot.pie(data, labels=labels)
-    plot.title("Mode")
-    plot.show()
+    
+    fig, ax = plot.subplots()
+    ax.pie(data, labels=labels, autopct='%1.1f%%', startangle=90)
+    ax.axis("equal")
+    ax.set_title("Mode")
+    
+    return fig, ax
 
 def get_time_sig(spotify, songs):
     #time sig is between 3 and 7 inclusive
     meters = [0] * 5
     for track in songs:
-        features = spotify.audio_features(track['uri'])
+        features = spotify.audio_features(track)
         meter = features[0]['time_signature']
         meters[meter - 3] += 1
     labels = '3', '4', '5', '6', '7'
-    plot.pie(meters, labels=labels)
-    plot.title("Time Signature")
-    plot.show()
+    
+    fig, ax = plot.subplots()
+    ax.pie(meters, labels=labels, autopct='%1.1f%%', startangle=90)
+    ax.axis("equal")
+    ax.set_title("Time Signature")
+    
+    return fig, ax
 
 def get_speechiness(spotify, songs):
     speechinesses = []
     for track in songs:
-        features = spotify.audio_features(track['uri'])
+        features = spotify.audio_features(track)
         speechiness = features[0]['speechiness']
         speechinesses.append(speechiness)
 
-    plot.hist(speechinesses, bins=10)
-    plot.title("Speechiness")
-    plot.show()
+    fig, ax = plot.subplots()
+    ax.hist(speechinesses, bins=10)
+    ax.set_title("Speechiness")
+
+    return fig, ax
 
 

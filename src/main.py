@@ -15,13 +15,14 @@ from get_songs import (
     get_user_top_songs,
     get_playlist_songs,
     get_user_saved_songs,
-    get_artist_top_songs,
-    get_songs_from_genre
+    get_artist_top_songs
 )
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from decouple import config
 import json
+
+import matplotlib.pyplot as plot
 
 def main():
     #create a spotipy object
@@ -134,31 +135,40 @@ def main():
         while (not parameter_chosen):
             if (int(parameter_int) == 1):
                 parameter_chosen = True
-                get_danceability(sp, songs)
+                graph, ax = get_danceability(sp, songs)
+                graph.show()
             elif (int(parameter_int) == 2):
                 parameter_chosen = True
-                get_energy(sp, songs)
+                graph, ax = get_energy(sp, songs)
+                graph.show()
             elif (int(parameter_int) == 3):
                 parameter_chosen = True
-                get_key(sp, songs)
+                graph, ax = get_key(sp, songs)
+                graph.show()
             elif (int(parameter_int) == 4):
                 parameter_chosen = True
-                get_loudness(sp, songs)
+                graph, ax = get_loudness(sp, songs)
+                graph.show()
             elif (int(parameter_int) == 5):
                 parameter_chosen = True
-                get_tempo(sp, songs)
+                graph, ax = get_tempo(sp, songs)
+                graph.show()
             elif (int(parameter_int) == 6):
                 parameter_chosen = True
-                get_duration(sp, songs)
+                graph, ax = get_duration(sp, songs)
+                graph.show()
             elif(int(parameter_int) == 7):
                 parameter_chosen = True
-                get_mode(sp, songs)
+                graph, ax = get_mode(sp, songs)
+                graph.show()
             elif(int(parameter_int) == 8):
                 parameter_chosen = True
-                get_time_sig(sp, songs)
+                graph, ax = get_time_sig(sp, songs)
+                graph.show()
             elif (int(parameter_int) == 9):
                 parameter_chosen = True
-                get_speechiness(sp, songs)
+                graph, ax = get_speechiness(sp, songs)
+                graph.show()
             else:
                 parameter_int = input("Invalid input! Enter a number 1-9 to make your selection: ")
         
