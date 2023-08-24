@@ -56,7 +56,7 @@ for song in songs['items']:
     song_uris.append(song['uri'])
 
 def test_get_danceability():
-    pass
+    data.get_danceability(sp, song_uris)
 
 def test_get_energy():
     pass
