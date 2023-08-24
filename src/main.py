@@ -13,7 +13,7 @@ from data import (
 )
 from get_songs import (
     get_user_top_songs,
-    get_user_playlist_songs,
+    get_playlist_songs,
     get_user_saved_songs,
     get_artist_top_songs,
     get_songs_from_genre
@@ -29,7 +29,7 @@ def main():
     API_SECRET = config('SPOTIPY_CLIENT_SECRET')
     REDIRECT_URI = config('REDIRECT_URI')
     USERNAME = config('USERNAME')
-    scope = 'user-top-read'
+    scope = ['user-library-read', 'user-top-read']
     sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id = API_ID, client_secret = API_SECRET, redirect_uri = REDIRECT_URI, scope=scope))
 
     #give the user the option to choose their own songs, or songs from a certain artist or genre
@@ -68,24 +68,49 @@ def main():
                 input_number = input("Enter the number of songs you wish to analyze: ")
                 if (input_number.isdigit()):
                     num_songs = int(input_number)
-                    if (num_songs >= 1 and num_songs <= 1000):
+                    if (num_songs >= 1 and num_songs <= 50):
                         number_chosen = True
                 else:
-                    input_number = input("Invalid input! Please enter an integer between 1 and 1000, inclusive: ")
+                    input_number = input("Invalid input! Please enter an integer between 1 and 50, inclusive: ")
             #fetch the songs from spotify
             songs = get_user_top_songs(sp, timeframe, num_songs)
             songs_option_chosen = True
         elif int(songs_option_int) == 2:
-            songs = get_user_playlist_songs(sp, USERNAME)
+            # from the api starter code
+            # Get all the playlists for this user
+            playlists = []
+            total = 1
+            # The API paginates the results, so we need to iterate
+            while len(playlists) < total:
+                playlists_response = sp.user_playlists(USERNAME, offset=len(playlists))
+                playlists.extend(playlists_response.get('items', []))
+                total = playlists_response.get('total')
+
+            # Remove any playlists that we don't own
+            playlists = [playlist for playlist in playlists if playlist.get('owner', {}).get('id') == USERNAME]
+
+            # List out all of the playlists
+            print('Your Playlists')
+            for i, playlist in enumerate(playlists):
+                print('  {}) {} - {}'.format(i + 1, playlist.get('name'), playlist.get('uri')))
+
+            # Choose a playlist
+            playlist_choice = int(input('\nChoose a playlist: '))
+            playlist = playlists[playlist_choice - 1]
+
+            songs = get_playlist_songs(sp, playlist)
             songs_option_chosen = True
         elif int(songs_option_int) == 3:
-            songs = get_user_saved_songs(sp, USERNAME)
+            songs = get_user_saved_songs(sp)
             songs_option_chosen = True
         elif int(songs_option_int) == 4:
-            songs = get_artist_top_songs(sp)
-            songs_option_chosen = True
-        elif int(songs_option_int) == 5:
-            songs = get_songs_from_genre(sp)
+            #this will take 10 songs no matter what
+            #let the user pick the artist
+            name = input("Enter the name of the artist: ")
+            search_results = sp.search(q=name, type='artist')
+            artist = search_results['artists']['items'][0]
+
+            songs = get_artist_top_songs(sp, artist)
             songs_option_chosen = True
         else:
             songs_option_int = input("Invalid input! Please enter a number 1-5 to make your selection: ")
