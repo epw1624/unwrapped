@@ -44,3 +44,42 @@ def test_get_artist_top_songs():
     assert len(top_songs) == 10
     song = sp.track(top_songs[0])
     assert song['artists'][0]['uri'] == artist['uri']
+
+# tests for each attribute analysis method
+from src import data
+
+# data set for testing is the album "Reflections of a Floating World" by Elder
+album = sp.search(q="Reflections of a Floating World", type='album', limit=1)['albums']['items'][0]
+songs = sp.album_tracks(album['uri'])
+song_uris = []
+for song in songs['items']:
+    song_uris.append(song['uri'])
+
+def test_get_danceability():
+    pass
+
+def test_get_energy():
+    pass
+
+def test_get_key():
+    pass
+
+def test_get_loudness():
+    pass
+
+def test_get_tempo():
+    pass
+
+def test_get_duration():
+    pass
+
+def test_get_mode():
+    pass
+
+def test_get_time_sig():
+    pass
+
+def test_get_speechiness():
+    pass
+
+
