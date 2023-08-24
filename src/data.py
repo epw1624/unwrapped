@@ -40,7 +40,7 @@ VERY_LARGE_INT = 2**63 - 1
 #songs is a json object of a user's top songs, such as that obtained by using the get_songs() method
 #spotify is an authenticated spotify object
 #returns an array with the freuqencies of danceabilities within ranges of 0.1
-def get_danceability(songs, spotify):
+def get_danceability(spotify, songs):
     #make a 10 element array for the frequency of danceability ratings in the following ranges:
     #0-0.1
     #0.1-0.2 index is danceability times 10 integer divided by 1
@@ -48,7 +48,7 @@ def get_danceability(songs, spotify):
     #etc
     danceabilities = []
     for track in songs:
-        features = spotify.audio_features(track['uri'])
+        features = spotify.audio_features(track)
         danceability = features[0]['danceability']
         danceabilities.append(danceability)
     #now plot this data in a histogram
@@ -56,10 +56,10 @@ def get_danceability(songs, spotify):
     plot.title("Danceability")
     plot.show()
 
-def get_energy(songs, spotify):
+def get_energy(spotify, songs):
     energies = []
     for track in songs:
-        features = spotify.audio_features(track['uri'])
+        features = spotify.audio_features(track)
         energy = features[0]['energy']
         energies.append(energy)
 
@@ -67,11 +67,11 @@ def get_energy(songs, spotify):
     plot.title("Energy")
     plot.show()
 
-def get_key(songs, spotify):
+def get_key(spotify, songs):
     #pie chart
     keys = [0] * 12
     for track in songs:
-        features = spotify.audio_features(track['uri'])
+        features = spotify.audio_features(track)
         key = features[0]['key']
         if (key != -1):
             keys[key] += 1
@@ -81,10 +81,10 @@ def get_key(songs, spotify):
     plot.title("Key")
     plot.show()
 
-def get_loudness(songs, spotify):
+def get_loudness(spotify, songs):
     loudnesses = []
     for track in songs:
-        features = spotify.audio_features(track['uri'])
+        features = spotify.audio_features(track)
         loudness = features[0]['loudness']
         loudnesses.append(loudness)
 
@@ -92,7 +92,7 @@ def get_loudness(songs, spotify):
     plot.title("Loudness")
     plot.show()
 
-def get_tempo(songs, spotify):
+def get_tempo(spotify, songs):
     tempos = []
     #also keep track of max and min tempo
     max = -VERY_LARGE_INT
@@ -112,7 +112,7 @@ def get_tempo(songs, spotify):
     plot.show()
 
 
-def get_duration(songs, spotify):
+def get_duration(spotify, songs):
     durations = []
     max = -VERY_LARGE_INT
     min = VERY_LARGE_INT
@@ -130,7 +130,7 @@ def get_duration(songs, spotify):
     plot.title("Duration")
     plot.show()
 
-def get_mode(songs, spotify):
+def get_mode(spotify, songs):
     major = 0
     minor = 0
     for track in songs:
@@ -146,7 +146,7 @@ def get_mode(songs, spotify):
     plot.title("Mode")
     plot.show()
 
-def get_time_sig(songs, spotify):
+def get_time_sig(spotify, songs):
     #time sig is between 3 and 7 inclusive
     meters = [0] * 5
     for track in songs:
@@ -158,7 +158,7 @@ def get_time_sig(songs, spotify):
     plot.title("Time Signature")
     plot.show()
 
-def get_speechiness(songs, spotify):
+def get_speechiness(spotify, songs):
     speechinesses = []
     for track in songs:
         features = spotify.audio_features(track['uri'])

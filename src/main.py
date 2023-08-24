@@ -134,31 +134,31 @@ def main():
         while (not parameter_chosen):
             if (int(parameter_int) == 1):
                 parameter_chosen = True
-                get_danceability(songs, sp)
+                get_danceability(sp, songs)
             elif (int(parameter_int) == 2):
                 parameter_chosen = True
-                get_energy(songs, sp)
+                get_energy(sp, songs)
             elif (int(parameter_int) == 3):
                 parameter_chosen = True
-                get_key(songs, sp)
+                get_key(sp, songs)
             elif (int(parameter_int) == 4):
                 parameter_chosen = True
-                get_loudness(songs, sp)
+                get_loudness(sp, songs)
             elif (int(parameter_int) == 5):
                 parameter_chosen = True
-                get_tempo(songs, sp)
+                get_tempo(sp, songs)
             elif (int(parameter_int) == 6):
                 parameter_chosen = True
-                get_duration(songs, sp)
+                get_duration(sp, songs)
             elif(int(parameter_int) == 7):
                 parameter_chosen = True
-                get_mode(songs, sp)
+                get_mode(sp, songs)
             elif(int(parameter_int) == 8):
                 parameter_chosen = True
-                get_time_sig(songs, sp)
+                get_time_sig(sp, songs)
             elif (int(parameter_int) == 9):
                 parameter_chosen = True
-                get_speechiness(songs, sp)
+                get_speechiness(sp, songs)
             else:
                 parameter_int = input("Invalid input! Enter a number 1-9 to make your selection: ")
         
