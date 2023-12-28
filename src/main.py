@@ -19,19 +19,18 @@ from get_songs import (
 )
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
-from decouple import config
 import json
+import config
 
 import matplotlib.pyplot as plot
 
 def main():
     #create a spotipy object
-    API_ID = config('SPOTIPY_CLIENT_ID')
-    API_SECRET = config('SPOTIPY_CLIENT_SECRET')
-    REDIRECT_URI = config('REDIRECT_URI')
-    USERNAME = config('USERNAME')
+    CLIENT_ID = config.SPOTIPY_CLIENT_ID
+    CLIENT_SECRET = config.SPOTIPY_CLIENT_SECRET
+    REDIRECT_URI = config.REDIRECT_URI
     scope = ['user-library-read', 'user-top-read']
-    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id = API_ID, client_secret = API_SECRET, redirect_uri = REDIRECT_URI, scope=scope))
+    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=CLIENT_ID, client_secret=CLIENT_SECRET, redirect_uri=REDIRECT_URI, scope=scope))
 
     #give the user the option to choose their own songs, or songs from a certain artist or genre
     songs_option_chosen = False
@@ -39,9 +38,8 @@ def main():
         1) Your top songs
         2) Your playlists
         3) Your saved songs
-        4) By artist
-        5) By genre""")
-    songs_option_int = input("Enter 1-5 to make your selection: ")
+        4) By artist""")
+    songs_option_int = input("Enter 1-4 to make your selection: ")
     while (not songs_option_chosen):
         if int(songs_option_int) == 1:
             #get the time frame and number of songs from the user
@@ -83,12 +81,10 @@ def main():
             total = 1
             # The API paginates the results, so we need to iterate
             while len(playlists) < total:
-                playlists_response = sp.user_playlists(USERNAME, offset=len(playlists))
+                # playlists_response = sp.user_playlists(USERNAME, offset=len(playlists))
+                playlists_response = sp.current_user_playlists(offset=len(playlists))
                 playlists.extend(playlists_response.get('items', []))
                 total = playlists_response.get('total')
-
-            # Remove any playlists that we don't own
-            playlists = [playlist for playlist in playlists if playlist.get('owner', {}).get('id') == USERNAME]
 
             # List out all of the playlists
             print('Your Playlists')
