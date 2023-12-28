@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='index.css')}}">
+    <title>Unwrapped - Your Music Trends</title>
+</head>
+<body>
+    <script src="{{url_for('static', filename='index.js')}}"></script>
+    <header>
+        <h1>Welcome to Unwrapped</h1>
+        <p>Analyze and graph your musical trends!</p>
+    </header>
+    
+    <main>
+        <form class="song-selection" id="form">
+            <label for="song-selection">Select songs to analyze:</label>
+            <select id="song-selection">
+                <option value="none" selected hidden>-- Enter Selection --</option>
+                <option value="top-tracks" onselect="javascript:$j('#top-tracks').show();">Your top tracks</option>
+                <option value="playlists" onselect="javascript:$j('#playlists').show();">Your playlists</option>
+                <option value="saved-tracks" onselect="javascript:$j('#saved-tracks').show();">Your saved songs</option>
+                <option value="artist-top-tracks"onselect="javascript:$j('#artist-tracks').show();">Artist top tracks</option>
+            </select>
+
+            <div id="top-tracks" display="None">
+                <p>Test top tracks</p>
+            </div>
+            <div id="playlists" display="None">
+                <p>Test playlists</p>
+            </div>
+            <div id="saved-tracks" display="None">
+                <p>Test saved tracks</p>
+            </div>
+            <div id="artist-tracks" display="None">
+                <p>Test artist tracks</p>
+            </div>
+            <button type="submit" id="continue-button" onclick="getOptions()">Continue</button>
+        </form>
+
+    </main>
+    
+    <footer>
+
+    </footer>
+</body>
+</html>
+
