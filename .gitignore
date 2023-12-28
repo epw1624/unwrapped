@@ -8,3 +8,5 @@ venv/
 
 credentials.sh
 .cache-*
+
+config.py
