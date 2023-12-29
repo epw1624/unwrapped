@@ -67,6 +67,10 @@ main {
     background-color: #168E3A; /* Slightly darker shade on hover */
 }
 
+#top-tracks, #playlists, #saved-tracks, #artist-tracks {
+    display: none;
+}
+
 #continue-button {
     width: 40px;
     height: 15px;
