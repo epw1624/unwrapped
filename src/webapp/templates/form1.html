@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="{{url_for('static', filename='mode.css')}}"> -->
+    <title>Unwrapped - Your Music Trends</title>
+</head>
+
+<body>
+    <!-- <script src="{{url_for('static', filename='index.js')}}"></script> -->
+    <header>
+        <h1>Welcome to Unwrapped</h1>
+        <p>Analyze and graph your musical trends!</p>
+    </header>
+
+    <form class="type-selection" id="form" method="post">
+        <label for="song-selection">Select songs to analyze:</label>
+        <select id="mode" name="mode" onchange="show_selected_div()">
+            <option value="none" selected hidden>-- Enter Selection --</option>
+            <option value="top-tracks">Your top tracks</option>
+            <option value="playlists">Your playlists</option>
+            <option value="saved-tracks">Your saved songs</option>
+        </select>
+
+        <br><br>
+
+        <button type="submit">Next</button>
+    </form>
+</body>
