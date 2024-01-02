@@ -20,7 +20,7 @@ from get_songs import (
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import json
-import config
+import webapp.config as config
 
 import matplotlib.pyplot as plot
 

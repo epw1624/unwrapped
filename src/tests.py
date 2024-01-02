@@ -3,7 +3,7 @@
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from decouple import config
-import config
+import webapp.config as config
 
 #create a spotipy object and define current user
 CLIENT_ID = config.SPOTIPY_CLIENT_ID
